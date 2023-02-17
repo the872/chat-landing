@@ -71,12 +71,15 @@
 	<h2>
 		Get the answers you need at your fingertips with Generic Express, the AI assistant available on iMessage.
 	</h2>
-	<button on:click={handleClick}>
+	<h4>
 		{#if countdownTime}
 			{countdownTime}
 		{:else}
-			Add to Calendar
+			Loading...
 		{/if}
+	</h4>
+	<button on:click={handleClick}>
+		Add to Calendar
 	</button>
 </section>
 
