@@ -5,20 +5,21 @@
 	let countdownInterval = null;
 	let countdownTime = null;
 
+
 	const handleClick = () => {
 		const allDayStart = new Date(launchDate.getFullYear(), launchDate.getMonth(), launchDate.getDate(), 0, 0, 0);
 		const allDayEnd = new Date(launchDate.getFullYear(), launchDate.getMonth(), launchDate.getDate() + 1, 0, 0, 0);
 		const calendarUrl = encodeURI(`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Generic Express//EN
-BEGIN:VEVENT
-SUMMARY:Generic Express Launches on iMessage
-DESCRIPTION:Generic Express launches on iMessage bringing a state of the art AI chatbot to the convenience of your native messages app
-DTSTART;VALUE=DATE:${allDayStart.toISOString().substring(0, 10).replace(/-/g, '')}
-DTEND;VALUE=DATE:${allDayEnd.toISOString().substring(0, 10).replace(/-/g, '')}
-LOCATION:https://generic.express
-END:VEVENT
-END:VCALENDAR`);
+    VERSION:2.0
+    PRODID:-//Generic Express//EN
+    BEGIN:VEVENT
+    SUMMARY:Generic Express Launches on iMessage
+    DESCRIPTION:Generic Express launches on iMessage bringing a state of the art AI chatbot to the convenience of your native messages app
+    DTSTART;VALUE=DATE:${allDayStart.toISOString().substring(0, 10).replace(/-/g, '')}
+    DTEND;VALUE=DATE:${allDayEnd.toISOString().substring(0, 10).replace(/-/g, '')}
+    LOCATION:https://generic.express
+    END:VEVENT
+    END:VCALENDAR`);
 		const downloadLink = document.createElement('a');
 		downloadLink.href = `data:text/calendar;charset=utf-8,${calendarUrl}`;
 		downloadLink.download = 'Generic Express Launches.ics';
@@ -34,7 +35,15 @@ END:VCALENDAR`);
 				const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
 				const minutes = Math.floor((difference / (1000 * 60)) % 60);
 				const seconds = Math.floor((difference / 1000) % 60);
-				countdownTime = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+				if (days > 0) {
+					countdownTime = `${days} days ${hours > 0 ? `${hours} hours` : ''} ${minutes > 0 ? `${minutes} minutes` : ''} ${seconds > 0 ? `${seconds} seconds` : ''}`;
+				} else if (hours > 0) {
+					countdownTime = `${hours > 0 ? `${hours} hours` : ''} ${minutes > 0 ? `${minutes} minutes` : ''} ${seconds > 0 ? `${seconds} seconds` : ''}`;
+				} else if (minutes > 0) {
+					countdownTime = `${minutes > 0 ? `${minutes} minutes` : ''} ${seconds > 0 ? `${seconds} seconds` : ''}`;
+				} else {
+					countdownTime = `${seconds} 'seconds'`;
+				}
 			} else {
 				clearInterval(countdownInterval);
 				countdownTime = 'Launch time!';
@@ -131,12 +140,35 @@ END:VCALENDAR`);
 
     button {
         margin-top: 2em;
-        padding: 0.75em 1.5em;
+        padding: 1em;
         font-size: 1.25em;
-        border-radius: 2em;
+        border-radius: 0.5em;
         border: none;
         background-color: #1E8BFF;
         color: #fff;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 0.5em 1em rgba(30, 139, 255, 0.2);
+    }
+
+    button:hover,
+    button:focus {
+        background-color: #0077CC;
+        outline: none;
+    }
+
+    button:active {
+        transform: translateY(0.2em);
+        box-shadow: none;
+    }
+
+    .countdown span {
+        display: inline-block;
+        margin: 0.5em;
+        padding: 0.25em;
+        background-color: #1E8BFF;
+        color: #fff;
+        border-radius: 0.25em;
+        box-shadow: 0 0.25em 0.5em rgba(30, 139, 255, 0.2);
     }
 </style>
