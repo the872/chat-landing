@@ -10,16 +10,43 @@
 		const allDayStart = new Date(launchDate.getFullYear(), launchDate.getMonth(), launchDate.getDate(), 0, 0, 0);
 		const allDayEnd = new Date(launchDate.getFullYear(), launchDate.getMonth(), launchDate.getDate() + 1, 0, 0, 0);
 		const calendarUrl = encodeURI(`BEGIN:VCALENDAR
-    VERSION:2.0
-    PRODID:-//Generic Express//EN
-    BEGIN:VEVENT
-    SUMMARY:Generic Express Launches on iMessage
-    DESCRIPTION:Generic Express launches on iMessage bringing a state of the art AI chatbot to the convenience of your native messages app
-    DTSTART;VALUE=DATE:${allDayStart.toISOString().substring(0, 10).replace(/-/g, '')}
-    DTEND;VALUE=DATE:${allDayEnd.toISOString().substring(0, 10).replace(/-/g, '')}
-    LOCATION:https://generic.express
-    END:VEVENT
-    END:VCALENDAR`);
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:America/Chicago
+LAST-MODIFIED:20201011T015911Z
+TZURL:http://tzurl.org/zoneinfo-outlook/America/Chicago
+X-LIC-LOCATION:America/Chicago
+BEGIN:DAYLIGHT
+TZNAME:CDT
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0500
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:CST
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0600
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:20230217T064452Z
+UID:1676616220464-29291@ical.marudot.com
+DTSTART;VALUE=DATE:20230301
+DTEND;VALUE=DATE:20230302
+SUMMARY:Generic Express Launches on iMessage
+URL:https://generic.express
+DESCRIPTION:Generic Express launches on iMessage bringing a state of the art AI chatbot to the convenience of your native messages app
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Generic Express Launches on iMessage
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR`);
 		const downloadLink = document.createElement('a');
 		downloadLink.href = `data:text/calendar;charset=utf-8,${calendarUrl}`;
 		downloadLink.download = 'Generic Express Launches.ics';
@@ -71,13 +98,13 @@
 	<h2>
 		Get the answers you need at your fingertips with Generic Express, the AI assistant available on iMessage.
 	</h2>
-	<h4>
+	<h3 class="count">
 		{#if countdownTime}
 			{countdownTime}
 		{:else}
 			Loading...
 		{/if}
-	</h4>
+	</h3>
 	<button on:click={handleClick}>
 		Add to Calendar
 	</button>
@@ -97,6 +124,11 @@
     h2 {
         text-align: center;
     }
+
+		.count {
+				font-weight: 800;
+				font-size: 1.125rem;
+		}
 
     .welcome {
         display: flex;
@@ -148,7 +180,8 @@
         border-radius: 0.5em;
         border: none;
         background-color: #1E8BFF;
-        color: #fff;
+        color: #1E1E1E;
+				font-weight: 600;
         cursor: pointer;
         transition: background-color 0.3s ease;
         box-shadow: 0 0.5em 1em rgba(30, 139, 255, 0.2);
@@ -156,7 +189,7 @@
 
     button:hover,
     button:focus {
-        background-color: #0077CC;
+        background-color: #D2D2D2;
         outline: none;
     }
 
