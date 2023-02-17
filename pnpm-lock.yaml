@@ -14,9 +14,13 @@ specifiers:
   prettier-plugin-svelte: ^2.8.1
   svelte: ^3.54.0
   svelte-check: ^2.9.2
+  svelte-countdown: ^1.1.2
   typescript: ^4.9.3
   vite: ^4.0.0
   vitest: ^0.25.3
+
+dependencies:
+  svelte-countdown: 1.1.2
 
 devDependencies:
   '@fontsource/fira-mono': 4.5.10
@@ -678,6 +682,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /dayjs/1.10.1:
+    resolution: {integrity: sha512-2xg7JrHQeLBQFkvTumLoy62x1siyeocc98QwjtURgvRqOPYmAkMUdmSjrOA+MlmL6QMQn5MUhDf6rNZNuPc1LQ==}
+    dev: false
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -1749,6 +1757,12 @@ packages:
       - stylus
       - sugarss
     dev: true
+
+  /svelte-countdown/1.1.2:
+    resolution: {integrity: sha512-datUfbRtGCp+7OwIRcbW9tbIwlkN7KiJp9Mg01Na9HgSQrLG0knsD/xjaIVKPovxY8xF0yOrbPEz+bT/BS9EBQ==}
+    dependencies:
+      dayjs: 1.10.1
+    dev: false
 
   /svelte-hmr/0.15.1_svelte@3.55.0:
     resolution: {integrity: sha512-BiKB4RZ8YSwRKCNVdNxK/GfY+r4Kjgp9jCLEy0DuqAKfmQtpL38cQK3afdpjw4sqSs4PLi3jIPJIFp259NkZtA==}
