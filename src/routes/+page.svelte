@@ -96,7 +96,7 @@ END:VCALENDAR`);
 		COMING SOON
 	</h1>
 	<h2>
-		Get the answers you need at your fingertips with Generic Express, the AI assistant available on iMessage.
+		Get the answers you need with just your voice, powered by Generic Express - the effortless AI assistant.
 	</h2>
 	<h3 class="count">
 		{#if countdownTime}
