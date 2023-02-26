@@ -89,7 +89,7 @@
 		<p>{error}</p>
 	{/if}
 	<div class="flex response">
-		{#if response}
+		{#if response && !loading}
 			<p>{response}</p>
 		{/if}
 	</div>
@@ -135,7 +135,7 @@
 			padding: 1rem 2rem;
 	}
 	h1 {
-			padding: 5rem;
+			padding-top: 5rem;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
