@@ -15,9 +15,9 @@
 			loading = true;
 			const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 			const OPENAI_API_KEY = apiKey;
-			const model = 'text-ada-001';
-			const buildType = selectedType === 'Translate' ? "Translate the following text word for word without summarizing" : selectedType === 'Summarize' ? 'Summarize the following text' : 'Can you proofread the following text and suggest a better way to write it';
-			const prompt = `${buildType}, please complete the response in the ${selectedLanguage === '' ? 'English' : selectedLanguage} language:\n\n${text}\n\n`;
+			const model = 'text-davinci-003';
+			const buildType = selectedType === 'Translate' ? "Translate the following text without changing the meaning" : selectedType === 'Summarize' ? 'Summarize the following text' : 'Can you proofread the following text and suggest a better way to write it';
+			const prompt = `${buildType}, please respond in the ${selectedLanguage === '' ? 'English' : selectedLanguage} language:\n\n${text}\n\n`;
 			const temperature = 0.3;
 			const max_tokens = 175;
 			const top_p = 1;
