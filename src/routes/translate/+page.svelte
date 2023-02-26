@@ -8,7 +8,7 @@
 	let inputText = '';
 	let selectedLanguage = '';
 
-	function translateText(text) {
+	const translateText = (text) => {
 		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 		const OPENAI_API_KEY = apiKey;
 		const model = 'text-davinci-003';
@@ -41,7 +41,7 @@
 			.then(data => {
 				const translation = data.choices[0].text.trim();
 			});
-	}
+	};
 </script>
 
 <div class="text-column">
