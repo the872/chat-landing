@@ -10,38 +10,40 @@
 	let loading = false;
 
 	const translateText = async (text) => {
-		loading = true;
-		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
-		const OPENAI_API_KEY = apiKey;
-		const model = 'text-davinci-003';
-		const prompt = `Translate ${summaryToggle ? "and summarize this" : "this word for word"} into ${selectedLanguage} language:\n\n${text}\n\n`;
-		const temperature = 0.3;
-		const max_tokens = 200;
-		const top_p = 1;
-		const frequency_penalty = 0;
-		const presence_penalty = 0;
+		if (!loading) {
+			loading = true;
+			const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
+			const OPENAI_API_KEY = apiKey;
+			const model = 'text-davinci-003';
+			const prompt = `Translate ${summaryToggle ? "and summarize this" : "this word for word"} into ${selectedLanguage === '' ? 'English' : selectedLanguage} language:\n\n${text}\n\n`;
+			const temperature = 0.3;
+			const max_tokens = 200;
+			const top_p = 1;
+			const frequency_penalty = 0;
+			const presence_penalty = 0;
 
-		const requestOptions = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${OPENAI_API_KEY}`
-			},
-			body: JSON.stringify({
-				model,
-				prompt,
-				temperature,
-				max_tokens,
-				top_p,
-				frequency_penalty,
-				presence_penalty
-			})
-		};
+			const requestOptions = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${OPENAI_API_KEY}`
+				},
+				body: JSON.stringify({
+					model,
+					prompt,
+					temperature,
+					max_tokens,
+					top_p,
+					frequency_penalty,
+					presence_penalty
+				})
+			};
 
-		const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
-		const data = await response.json();
-		translation = data.choices[0].text.trim();
-		loading = false;
+			const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
+			const data = await response.json();
+			translation = data.choices[0].text.trim();
+			loading = false;
+		}
 	};
 
 	const handleInputTextChange = (event) => {
