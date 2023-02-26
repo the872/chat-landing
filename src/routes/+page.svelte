@@ -135,7 +135,7 @@
 			padding: 1rem 2rem;
 	}
 	h1 {
-			padding-top: 5rem;
+			padding-top: 2rem;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
