@@ -83,13 +83,8 @@
 </script>
 
 <section>
-	<h1>Generic Express</h1>
-	<div class="welcome">
-		<img src={logo} alt="generic express" />
-		<img src={logo} alt="generic express" />
-		<img src={logo} alt="generic express" />
-	</div>
-	<h2>Get the answers you need with just your voice, powered by Generic Express - the effortless AI assistant. Click below to ask your first question or get a suggestion.</h2>
+	<h1>Get the answers you need with just your voice, powered by Generic Express - the effortless AI assistant.</h1>
+	<h2>Click "New Question" to ask your question or get a suggestion. Press "Stop Recording" when you are finished.</h2>
 	{#if error}
 		<p>{error}</p>
 	{/if}
@@ -99,17 +94,21 @@
 		{/if}
 	</div>
 	<div class="flex">
+		{#if loading}
+			<div class="welcome">
+				<img src={logo} alt="generic express" />
+				<img src={logo} alt="generic express" />
+				<img src={logo} alt="generic express" />
+			</div>
+		{:else}
 		<button on:click={toggleListening}>
-			{#if loading}
-				<span class="loader"></span>
-			{:else}
 				{#if listening}
 					Stop Recording
 				{:else}
 					New Question
 				{/if}
-			{/if}
 		</button>
+		{/if}
 	</div>
 </section>
 
@@ -119,6 +118,7 @@
 			align-content: center;
 			flex-direction: column;
 			justify-content: center;
+			height: 100%;
 	}
 	.flex {
       display: flex;
@@ -134,10 +134,18 @@
 			color: black;
 			padding: 1rem 2rem;
 	}
+	h1 {
+			padding: 5rem;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(45deg, #1E8BFF, white);
+	}
 	h2 {
 			display: flex;
 			justify-content: center;
 			text-align: center;
+			line-height: 2rem;
 	}
 	button {
 			cursor: pointer;
