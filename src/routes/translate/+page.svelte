@@ -5,7 +5,7 @@
 <script>
 	import logo from '$lib/images/generic-logo.png';
 	let inputText = '';
-	let selectedLanguage = 'en';
+	let selectedLanguage = 'English';
 	let selectedType = 'Translate';
 	let translation = '';
 	let loading = false;
