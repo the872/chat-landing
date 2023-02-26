@@ -7,12 +7,14 @@
 	let inputText = '';
 	let selectedLanguage = '';
 	let translation = '';
+	let loading = false;
 
 	const translateText = async (text) => {
+		loading = true;
 		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 		const OPENAI_API_KEY = apiKey;
 		const model = 'text-davinci-003';
-		const prompt = `Translate ${summaryToggle && "and summarize"} this into ${selectedLanguage}:\n\n${text}\n\n`;
+		const prompt = `Translate ${summaryToggle ? "and summarize this" : "this word for word"} into ${selectedLanguage} language:\n\n${text}\n\n`;
 		const temperature = 0.3;
 		const max_tokens = 200;
 		const top_p = 1;
@@ -39,6 +41,7 @@
 		const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
 		const data = await response.json();
 		translation = data.choices[0].text.trim();
+		loading = false;
 	};
 
 	const handleInputTextChange = (event) => {
@@ -64,7 +67,14 @@
 		</div>
 		<button on:click={() => translateText(inputText)}>Generate</button>
 	</div>
-	{#if translation !== ''}
+	{#if loading}
+		<div class="welcome">
+			<img src={logo} alt="generic express" />
+			<img src={logo} alt="generic express" />
+			<img src={logo} alt="generic express" />
+		</div>
+		{/if}
+	{#if translation !== '' && !loading}
 		<label for="output">Output</label>
 		<textarea id="output" placeholder="Output will load here...">{translation}</textarea>
 	{/if}
@@ -85,6 +95,8 @@
 	}
 	textarea {
 			min-height: 350px;
+      font-size: 1.15rem;
+      line-height: 1.75rem;
 	}
 	h1 {
       background-clip: text;
@@ -120,7 +132,41 @@
       align-content: center;
 	}
 
-	#bottom-bar > div {
-
-	}
+  .welcome {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 150px;
+  }
+  .welcome img {
+      width: 50px;
+      height: 50px;
+      margin: 0 20px;
+      opacity: 0.2;
+      animation: pulse 1s infinite;
+  }
+  .welcome img:nth-child(1) {
+      animation-delay: 0.2s;
+  }
+  .welcome img:nth-child(2) {
+      animation-delay: 0.4s;
+  }
+  .welcome img:nth-child(3) {
+      animation-delay: 0.6s;
+  }
+  @keyframes pulse {
+      0% {
+          transform: scale(1);
+          opacity: 0.2;
+      }
+      50% {
+          transform: scale(1.2);
+          opacity: 1;
+      }
+      100% {
+          transform: scale(1);
+          opacity: 0.2;
+      }
+  }
 </style>
