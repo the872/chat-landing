@@ -9,7 +9,7 @@
 	let selectedLanguage = '';
 	let translation = '';
 
-	const translateText = (text) => {
+	const translateText = async (text) => {
 		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 		const OPENAI_API_KEY = apiKey;
 		const model = 'text-davinci-003';
@@ -37,11 +37,9 @@
 			})
 		};
 
-		fetch('https://api.openai.com/v1/completions', requestOptions)
-			.then(response => response.json())
-			.then(data => {
-				translation = data.choices[0].text.trim();
-			});
+		const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
+		const data = await response.json();
+		translation = data.choices[0].text.trim();
 	};
 </script>
 
