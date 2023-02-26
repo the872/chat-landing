@@ -4,9 +4,9 @@
 </svelte:head>
 <script>
 	import logo from '$lib/images/generic-logo.png';
-	let summaryToggle = true;
 	let inputText = '';
-	let selectedLanguage = '';
+	let selectedLanguage = 'en';
+	let selectedType = 'Translate';
 	let translation = '';
 	let loading = false;
 
@@ -15,8 +15,9 @@
 			loading = true;
 			const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 			const OPENAI_API_KEY = apiKey;
-			const model = 'text-davinci-003';
-			const prompt = `Translate ${summaryToggle ? "and summarize this" : "this word for word"} into ${selectedLanguage === '' ? 'English' : selectedLanguage} language:\n\n${text}\n\n`;
+			const model = 'text-ada-001';
+			const buildType = selectedType === 'Translate' ? "Translate the following text word for word without summarizing" : selectedType === 'Summarize' ? 'Summarize the following text' : 'Can you proofread the following text and suggest a better way to write it';
+			const prompt = `${buildType}, please complete the response in the ${selectedLanguage === '' ? 'English' : selectedLanguage} language:\n\n${text}\n\n`;
 			const temperature = 0.3;
 			const max_tokens = 175;
 			const top_p = 1;
@@ -59,22 +60,138 @@
 		selectedLanguage = event.target.value;
 	};
 
-	const handleSummaryChange = () => {
-		summaryToggle = !summaryToggle;
+	const handleSelectChange = (event) => {
+		selectedType = event.target.value;
 	};
 </script>
 
 <div class="text-column">
-	<h1>Translate and summarize text into any language, powered by Generic Express - the ultimate translator.</h1>
+	<h1>Effortlessly translate, summarize, and proofread text in any language with Generic Express - the only translation tool you need.</h1>
 	<h2>Paste or type the text you want to translate, type the language you want to translate to and click "Generate".</h2>
-	<label for="prompt">Text to Translate</label>
-	<textarea id="prompt" aria-multiline='true' maxlength="1000" placeholder="Enter text here..." on:input={handleInputTextChange}>{inputText}</textarea>
+	<div class="flex">
+		<label for="type">Select Action</label>
+		<select id="type" on:change={handleSelectChange}>
+			<option value="Translate" selected>Translate (Default)</option>
+			<option value="Summarize">Summarize</option>
+			<option value="Proofread">Proofread</option>
+		</select>
+	</div>
+	<label for="prompt">Text to {selectedType}</label>
+	<textarea id="prompt" aria-multiline='true' maxlength="3000" placeholder="Enter text here..." on:input={handleInputTextChange}>{inputText}</textarea>
 	<div id="bottom-bar flex">
 		<div class="flex">
 			<label for="language">Desired Language</label>
-			<input id="language" placeholder="Enter language here..." on:input={handleSelectedLanguageChange} />
-			<label for="summarize" class="custom-label">Summarize</label>
-			<input type="checkbox" id="summarize" checked={summaryToggle} on:click={handleSummaryChange} />
+			<select id="language" on:change={handleSelectedLanguageChange}>
+				<option value="Afrikaans">Afrikaans</option>
+				<option value="Albanian">Albanian</option>
+				<option value="Amharic">Amharic</option>
+				<option value="Arabic">Arabic</option>
+				<option value="Armenian">Armenian</option>
+				<option value="Azerbaijani">Azerbaijani</option>
+				<option value="Basque">Basque</option>
+				<option value="Belarusian">Belarusian</option>
+				<option value="Bengali">Bengali</option>
+				<option value="Bosnian">Bosnian</option>
+				<option value="Bulgarian">Bulgarian</option>
+				<option value="Catalan">Catalan</option>
+				<option value="Cebuano">Cebuano</option>
+				<option value="Chichewa">Chichewa</option>
+				<option value="Chinese (Simplified)">Chinese (Simplified)</option>
+				<option value="Chinese (Traditional)">Chinese (Traditional)</option>
+				<option value="Corsican">Corsican</option>
+				<option value="Croatian">Croatian</option>
+				<option value="Czech">Czech</option>
+				<option value="Danish">Danish</option>
+				<option value="Dutch">Dutch</option>
+				<option value="English" selected>English (Default)</option>
+				<option value="Esperanto">Esperanto</option>
+				<option value="Estonian">Estonian</option>
+				<option value="Filipino">Filipino</option>
+				<option value="Finnish">Finnish</option>
+				<option value="French">French</option>
+				<option value="Frisian">Frisian</option>
+				<option value="Galician">Galician</option>
+				<option value="Georgian">Georgian</option>
+				<option value="German">German</option>
+				<option value="Greek">Greek</option>
+				<option value="Gujarati">Gujarati</option>
+				<option value="Haitian Creole">Haitian Creole</option>
+				<option value="Hausa">Hausa</option>
+				<option value="Hawaiian">Hawaiian</option>
+				<option value="Hebrew">Hebrew</option>
+				<option value="Hindi">Hindi</option>
+				<option value="Hmong">Hmong</option>
+				<option value="Hungarian">Hungarian</option>
+				<option value="Icelandic">Icelandic</option>
+				<option value="Igbo">Igbo</option>
+				<option value="Indonesian">Indonesian</option>
+				<option value="Irish">Irish</option>
+				<option value="Italian">Italian</option>
+				<option value="Japanese">Japanese</option>
+				<option value="Javanese">Javanese</option>
+				<option value="Kannada">Kannada</option>
+				<option value="Kazakh">Kazakh</option>
+				<option value="Khmer">Khmer</option>
+				<option value="Kinyarwanda">Kinyarwanda</option>
+				<option value="Korean">Korean</option>
+				<option value="Kurdish (Kurmanji)">Kurdish (Kurmanji)</option>
+				<option value="Kyrgyz">Kyrgyz</option>
+				<option value="Lao">Lao</option>
+				<option value="Latin">Latin</option>
+				<option value="Latvian">Latvian</option>
+				<option value="Lithuanian">Lithuanian</option>
+				<option value="Luxembourgish">Luxembourgish</option>
+				<option value="Macedonian">Macedonian</option>
+				<option value="Malagasy">Malagasy</option>
+				<option value="Malay">Malay</option>
+				<option value="Malayalam">Malayalam</option>
+				<option value="Maltese">Maltese</option>
+				<option value="Maori">Maori</option>
+				<option value="Marathi">Marathi</option>
+				<option value="Mongolian">Mongolian</option>
+				<option value="Myanmar (Burmese)">Myanmar (Burmese)</option>
+				<option value="Nepali">Nepali</option>
+				<option value="Norwegian">Norwegian</option>
+				<option value="Odia (Oriya)">Odia (Oriya)</option>
+				<option value="Pashto">Pashto</option>
+				<option value="Persian">Persian</option>
+				<option value="Polish">Polish</option>
+				<option value="Portuguese">Portuguese</option>
+				<option value="Punjabi">Punjabi</option>
+				<option value="Romanian">Romanian</option>
+				<option value="Russian">Russian</option>
+				<option value="Samoan">Samoan</option>
+				<option value="Scots Gaelic">Scots Gaelic</option>
+				<option value="Serbian">Serbian</option>
+				<option value="Sesotho">Sesotho</option>
+				<option value="Shona">Shona</option>
+				<option value="Sindhi">Sindhi</option>
+				<option value="Sinhala">Sinhala</option>
+				<option value="Slovak">Slovak</option>
+				<option value="Slovenian">Slovenian</option>
+				<option value="Somali">Somali</option>
+				<option value="Spanish">Spanish</option>
+				<option value="Sundanese">Sundanese</option>
+				<option value="Swahili">Swahili</option>
+				<option value="Swedish">Swedish</option>
+				<option value="Tajik">Tajik</option>
+				<option value="Tamil">Tamil</option>
+				<option value="Tatar">Tatar</option>
+				<option value="Telugu">Telugu</option>
+				<option value="Thai">Thai</option>
+				<option value="Turkish">Turkish</option>
+				<option value="Turkmen">Turkmen</option>
+				<option value="Ukrainian">Ukrainian</option>
+				<option value="Urdu">Urdu</option>
+				<option value="Uyghur">Uyghur</option>
+				<option value="Uzbek">Uzbek</option>
+				<option value="Vietnamese">Vietnamese</option>
+				<option value="Welsh">Welsh</option>
+				<option value="Xhosa">Xhosa</option>
+				<option value="Yiddish">Yiddish</option>
+				<option value="Yoruba">Yoruba</option>
+				<option value="Zulu">Zulu</option>
+			</select>
 		</div>
 		<div class="flex">
 			<button on:click={() => translateText(inputText)}>Generate</button>
@@ -95,12 +212,15 @@
 
 
 <style>
-	textarea, input, button {
+	textarea, input, button, select {
 			font-family: inherit;
 			padding: 1rem;
 			margin: 1rem;
 			outline: none;
 			border-radius: 1rem;
+			font-size: 1.2rem;
+			font-weight: 600;
+			width: 100%;
 	}
 	.custom-label {
 			display: flex;
