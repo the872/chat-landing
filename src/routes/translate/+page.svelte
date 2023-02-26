@@ -69,14 +69,16 @@
 	<h2>Paste or type the text you want to translate, type the language you want to translate to and click "Generate".</h2>
 	<label for="prompt">Text to Translate</label>
 	<textarea id="prompt" aria-multiline='true' maxlength="1000" placeholder="Enter text here..." on:input={handleInputTextChange}>{inputText}</textarea>
-	<div id="bottom-bar">
-		<div>
+	<div id="bottom-bar flex">
+		<div class="flex">
 			<label for="language">Desired Language</label>
 			<input id="language" placeholder="Enter language here..." on:input={handleSelectedLanguageChange} />
-			<label for="summarize">Summarize</label>
+			<label for="summarize" class="custom-label">Summarize</label>
 			<input type="checkbox" id="summarize" checked={summaryToggle} on:click={handleSummaryChange} />
 		</div>
-		<button on:click={() => translateText(inputText)}>Generate</button>
+		<div class="flex">
+			<button on:click={() => translateText(inputText)}>Generate</button>
+		</div>
 	</div>
 	{#if loading}
 		<div class="welcome">
@@ -99,6 +101,18 @@
 			margin: 1rem;
 			outline: none;
 			border-radius: 1rem;
+	}
+	.custom-label {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+	}
+	.flex {
+			display: flex;
+			flex-wrap: wrap;
+	}
+	input {
+			width: 100%;
 	}
 	input[type=checkbox] {
 			height: 1.5rem;
@@ -141,7 +155,7 @@
 			width: 100%;
 			display: flex;
       justify-content: center;
-      align-content: center;
+      align-items: center;
 	}
 
   .welcome {
