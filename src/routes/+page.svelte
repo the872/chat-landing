@@ -87,7 +87,7 @@
 </script>
 
 <section>
-	<h1>Get the answers you need with just your voice, powered by Generic Express - the effortless AI assistant.</h1>
+	<h1>Get the answers you need with just your voice - the effortless AI assistant.</h1>
 	<h2>Click "New Question" to ask your question or get a suggestion. Press "Stop Recording" when you are finished.</h2>
 	{#if error}
 		<p>{error}</p>
@@ -117,6 +117,9 @@
 </section>
 
 <style>
+		main {
+        max-width: 48rem;
+		}
 	section {
 			display: flex;
 			align-content: center;
@@ -139,7 +142,7 @@
 			padding: 1rem 2rem;
 	}
 	h1 {
-			padding-top: 2rem;
+			margin-top: 1.5rem;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;

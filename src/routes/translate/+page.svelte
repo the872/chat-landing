@@ -66,7 +66,7 @@
 </script>
 
 <div class="text-column">
-	<h1>Effortlessly translate, summarize, and proofread text to any language with Generic Express - the only translation tool you need.</h1>
+	<h1>Translate, summarize, and proofread text to any language - the only translation tool you need.</h1>
 	<h2>Paste or type the text you want to translate, type the language you want to translate to and click "Generate".</h2>
 	<div class="flex">
 		<label for="type">Select Action</label>
