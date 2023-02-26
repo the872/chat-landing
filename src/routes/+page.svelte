@@ -93,6 +93,11 @@
 	{#if error}
 		<p>{error}</p>
 	{/if}
+	<div class="flex response">
+		{#if response}
+			<p>{response}</p>
+		{/if}
+	</div>
 	<div class="flex">
 		<button on:click={toggleListening}>
 			{#if loading}
@@ -105,11 +110,6 @@
 				{/if}
 			{/if}
 		</button>
-	</div>
-	<div class="flex response">
-		{#if response}
-			<p>{response}</p>
-		{/if}
 	</div>
 </section>
 
