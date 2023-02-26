@@ -7,6 +7,7 @@
 	let summaryToggle = true;
 	let inputText = '';
 	let selectedLanguage = '';
+	let translation = '';
 
 	const translateText = (text) => {
 		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
@@ -39,7 +40,7 @@
 		fetch('https://api.openai.com/v1/completions', requestOptions)
 			.then(response => response.json())
 			.then(data => {
-				const translation = data.choices[0].text.trim();
+				translation = data.choices[0].text.trim();
 			});
 	};
 </script>
@@ -58,8 +59,10 @@
 		</div>
 		<button on:click={() => translateText(inputText)}>Generate</button>
 	</div>
+	{#if translation !== ''}
 	<label for="output">Output</label>
-	<textarea id="output" placeholder="Output will load here..."></textarea>
+	<textarea id="output" placeholder="Output will load here...">{translation}</textarea>
+		{/if}
 </div>
 
 <style>
