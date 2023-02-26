@@ -56,7 +56,7 @@
 			<label for="summarize">Summarize</label>
 			<input type="checkbox" id="summarize" checked={summaryToggle} />
 		</div>
-		<button on:click={translateText(inputText)}>Generate</button>
+		<button on:click={() => translateText(inputText)}>Generate</button>
 	</div>
 	<label for="output">Output</label>
 	<textarea id="output" placeholder="Output will load here..."></textarea>
