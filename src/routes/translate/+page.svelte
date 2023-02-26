@@ -11,7 +11,7 @@
 	let loading = false;
 
 	const translateText = async (text) => {
-		if (!loading) {
+		if (!loading && text !== '') {
 			loading = true;
 			const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 			const OPENAI_API_KEY = apiKey;
