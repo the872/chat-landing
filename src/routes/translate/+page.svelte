@@ -2,7 +2,6 @@
 	<title>About</title>
 	<meta name="description" content="A personal AI chatbot app with voice" />
 </svelte:head>
-
 <script>
 	let summaryToggle = true;
 	let inputText = '';
@@ -41,27 +40,36 @@
 		const data = await response.json();
 		translation = data.choices[0].text.trim();
 	};
+
+	const handleInputTextChange = (event) => {
+		inputText = event.target.value;
+	};
+
+	const handleSelectedLanguageChange = (event) => {
+		selectedLanguage = event.target.value;
+	};
 </script>
 
 <div class="text-column">
 	<h1>Translate and summarize text into any language, powered by Generic Express - the ultimate translator.</h1>
 	<h2>Paste or type the text you want to translate, type the language you to translate to and click "Generate".</h2>
 	<label for="prompt">Text to Translate</label>
-	<textarea id="prompt" aria-multiline='true' maxlength="1500" placeholder="Enter text here...">{inputText}</textarea>
+	<textarea id="prompt" aria-multiline='true' maxlength="1500" placeholder="Enter text here..." on:input={handleInputTextChange}>{inputText}</textarea>
 	<div id="bottom-bar">
 		<div>
 			<label for="language">Desired Language</label>
-			<input id="language" placeholder="Enter language here..." />
+			<input id="language" placeholder="Enter language here..." on:input={handleSelectedLanguageChange} />
 			<label for="summarize">Summarize</label>
 			<input type="checkbox" id="summarize" checked={summaryToggle} />
 		</div>
 		<button on:click={() => translateText(inputText)}>Generate</button>
 	</div>
 	{#if translation !== ''}
-	<label for="output">Output</label>
-	<textarea id="output" placeholder="Output will load here...">{translation}</textarea>
-		{/if}
+		<label for="output">Output</label>
+		<textarea id="output" placeholder="Output will load here...">{translation}</textarea>
+	{/if}
 </div>
+
 
 <style>
 	textarea, input, button {
