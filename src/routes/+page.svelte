@@ -8,7 +8,6 @@
 	let loading = false;
 	let error = null;
 	let response = null;
-	const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 	const toggleListening = () => {
 		if (listening) {
@@ -52,6 +51,7 @@
 	};
 
 	const sendTranscript = async () => {
+		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 		try {
 			const { data } = await axios.post('https://api.openai.com/v1/completions', {
 				model: 'text-davinci-003',
@@ -65,7 +65,7 @@
 			}, {
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${OPENAI_API_KEY}`,
+					'Authorization': `Bearer ${apiKey}`,
 				}
 			});
 			response = data.choices[0].text;
