@@ -40,10 +40,14 @@
 				})
 			};
 
-			const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
-			const data = await response.json();
-			translation = data.choices[0].text.trim();
-			loading = false;
+			try {
+				const response = await fetch('https://api.openai.com/v1/completions', requestOptions);
+				const data = await response.json();
+				translation = data.choices[0].text.trim();
+				loading = false;
+			} catch {
+				loading = false;
+			}
 		}
 	};
 
