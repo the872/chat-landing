@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Ask | Generic Express</title>
+	<meta name="description" content="A personal AI chatbot app with voice." />
+</svelte:head>
 <script>
 	import { onMount } from 'svelte';
 	import axios from 'axios';
