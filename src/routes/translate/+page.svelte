@@ -66,7 +66,7 @@
 </script>
 
 <div class="text-column">
-	<h1>Effortlessly translate, summarize, and proofread text in any language with Generic Express - the only translation tool you need.</h1>
+	<h1>Effortlessly translate, summarize, and proofread text to any language with Generic Express - the only translation tool you need.</h1>
 	<h2>Paste or type the text you want to translate, type the language you want to translate to and click "Generate".</h2>
 	<div class="flex">
 		<label for="type">Select Action</label>
@@ -222,10 +222,14 @@
 			font-weight: 600;
 			width: 100%;
 	}
-	.custom-label {
-			display: flex;
-			justify-content: center;
-			align-items: center;
+	select {
+      -webkit-appearance: none; /* remove default arrow icon for certain browsers */
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/60/60995.png'); /* add your custom icon */
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 16px 16px;
 	}
 	.flex {
 			display: flex;
