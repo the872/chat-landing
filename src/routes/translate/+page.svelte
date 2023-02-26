@@ -66,7 +66,7 @@
 
 <div class="text-column">
 	<h1>Translate and summarize text into any language, powered by Generic Express - the ultimate translator.</h1>
-	<h2>Paste or type the text you want to translate, type the language you to translate to and click "Generate".</h2>
+	<h2>Paste or type the text you want to translate, type the language you want to translate to and click "Generate".</h2>
 	<label for="prompt">Text to Translate</label>
 	<textarea id="prompt" aria-multiline='true' maxlength="1000" placeholder="Enter text here..." on:input={handleInputTextChange}>{inputText}</textarea>
 	<div id="bottom-bar">
