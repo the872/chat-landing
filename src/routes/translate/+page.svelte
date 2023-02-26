@@ -3,6 +3,7 @@
 	<meta name="description" content="A personal AI chatbot app with voice" />
 </svelte:head>
 <script>
+	import logo from '$lib/images/generic-logo.png';
 	let summaryToggle = true;
 	let inputText = '';
 	let selectedLanguage = '';
