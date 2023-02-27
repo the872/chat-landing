@@ -21,7 +21,7 @@
 					Translate
 				</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/meet?user=' ? 'page' : undefined}>
+			<li aria-current={$page.url.pathname.startsWith('/meet') ? 'page' : undefined}>
 				<a href={$page.url.pathname.startsWith('/meet') ? 'javascript:void(0)' : '/meet'}>
 					Meet
 				</a>
