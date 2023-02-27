@@ -14,19 +14,19 @@
 
 	let otherInstances = [];
 
-	const instanceId = uuidv4();
+	let instanceId = uuidv4();
 	let userId = '';
 
 	const dispatch = createEventDispatcher();
 
 	function getLocation() {
+		updateUrl();
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
 					latitude = position.coords.latitude;
 					longitude = position.coords.longitude;
 					accuracy = position.coords.accuracy;
-					updateUrl();
 					updateCenterPoint();
 				},
 				(error) => {
@@ -41,18 +41,22 @@
 	function updateUrl() {
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
-			if (!url.searchParams.get('id')) {
-				url.searchParams.set('id', instanceId);
-			}
 			if (!url.searchParams.get('user')) {
 				userId = uuidv4();
 				url.searchParams.set('user', userId);
+				window.history.pushState(null, '', url);
 			} else {
 				userId = url.searchParams.get('user');
 			}
-			window.history.pushState(null, '', url);
+			if (!url.searchParams.get('id')) {
+				url.searchParams.set('id', instanceId);
+				window.history.pushState(null, '', url);
+			} else {
+				instanceId = url.searchParams.get('id');
+			}
 		}
 	}
+
 
 	function updateCenterPoint() {
 		const locations = otherInstances.concat({
