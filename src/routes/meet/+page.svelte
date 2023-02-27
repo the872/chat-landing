@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 
 	let latitude = '';
@@ -17,6 +17,8 @@
 	const instanceId = uuidv4();
 	const userId = uuidv4();
 
+	const dispatch = createEventDispatcher();
+
 	function getLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
@@ -24,6 +26,7 @@
 					latitude = position.coords.latitude;
 					longitude = position.coords.longitude;
 					accuracy = position.coords.accuracy;
+					updateUrl();
 					updateCenterPoint();
 				},
 				(error) => {
@@ -33,6 +36,13 @@
 		} else {
 			console.error('Geolocation is not supported by this browser.');
 		}
+	}
+
+	function updateUrl() {
+		const url = new URL(window.location.href);
+		url.searchParams.set('id', instanceId);
+		url.searchParams.set('user', userId);
+		window.history.pushState(null, '', url);
 	}
 
 	function updateCenterPoint() {
@@ -52,16 +62,25 @@
 	}
 
 	function copyLink() {
-		const url = new URL(import.meta.env.SNOWPACK_PUBLIC_URL);
+		const url = new URL(window.location.href);
+		url.searchParams.delete('user');
 		navigator.clipboard.writeText(url.toString());
 		buttonText = 'Link Copied';
 		setTimeout(() => {
 			buttonText = 'Copy Link';
+			dispatch('buttonTextUpdated', buttonText);
 		}, 3000);
 	}
 
 	onMount(() => {
 		getLocation();
+	});
+
+	onDestroy(() => {
+		const url = new URL(window.location.href);
+		url.searchParams.delete('id');
+		url.searchParams.delete('user');
+		window.history.pushState(null, '', url);
 	});
 
 </script>
