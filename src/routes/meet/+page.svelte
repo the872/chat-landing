@@ -1,5 +1,5 @@
 <script>
-	import { onMount, onDestroy, createEventDispatcher, onUpdate } from 'svelte';
+	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
 
 	let latitude = '';
@@ -39,17 +39,19 @@
 	}
 
 	function updateUrl() {
-		const url = new URL(window.location.href);
-		if (!url.searchParams.get('id')) {
-			url.searchParams.set('id', instanceId);
+		if (typeof window !== 'undefined') {
+			const url = new URL(window.location.href);
+			if (!url.searchParams.get('id')) {
+				url.searchParams.set('id', instanceId);
+			}
+			if (!url.searchParams.get('user')) {
+				userId = uuidv4();
+				url.searchParams.set('user', userId);
+			} else {
+				userId = url.searchParams.get('user');
+			}
+			window.history.pushState(null, '', url);
 		}
-		if (!url.searchParams.get('user')) {
-			userId = uuidv4();
-			url.searchParams.set('user', userId);
-		} else {
-			userId = url.searchParams.get('user');
-		}
-		window.history.pushState(null, '', url);
 	}
 
 	function updateCenterPoint() {
@@ -69,36 +71,35 @@
 	}
 
 	function copyLink() {
-		const url = new URL(window.location.href);
-		url.searchParams.delete('user');
-		navigator.clipboard.writeText(url.toString());
-		buttonText = 'Link Copied';
-		setTimeout(() => {
-			buttonText = 'Copy Link';
-			dispatch('buttonTextUpdated', buttonText);
-		}, 3000);
+		if (typeof window !== 'undefined') {
+			const url = new URL(window.location.href);
+			url.searchParams.delete('user');
+			navigator.clipboard.writeText(url.toString());
+			buttonText = 'Link Copied';
+			setTimeout(() => {
+				buttonText = 'Copy Link';
+				dispatch('buttonTextUpdated', buttonText);
+			}, 3000);
+		}
 	}
 
 	onMount(() => {
 		getLocation();
 	});
 
-	onUpdate(() => {
-		getLocation();
-	});
-
 	onDestroy(() => {
-		const url = new URL(window.location.href);
-		url.searchParams.delete('id');
-		url.searchParams.delete('user');
-		window.history.pushState(null, '', url);
+		if (typeof window !== 'undefined') {
+			const url = new URL(window.location.href);
+			url.searchParams.delete('id');
+			url.searchParams.delete('user');
+			window.history.pushState(null, '', url);
+		}
 	});
 
 </script>
 
 <div>
-
-<p>Instance ID: {instanceId}</p>
+	<p>Instance ID: {instanceId}</p>
 	<p>User ID: {userId}</p>
 	<p>Latitude: {latitude}</p>
 	<p>Longitude: {longitude}</p>
