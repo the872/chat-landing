@@ -1,7 +1,3 @@
-<svelte:head>
-	<title>Ask | Generic Express</title>
-	<meta name="description" content="A personal AI chatbot app with voice." />
-</svelte:head>
 <script>
 	import { onMount } from 'svelte';
 	import axios from 'axios';
@@ -12,6 +8,13 @@
 	let loading = false;
 	let error = null;
 	let response = null;
+
+	let audioCtx = null;
+	let analyser = null;
+	let dataArray = null;
+	let bufferLength = null;
+	let canvas = null;
+	let canvasCtx = null;
 
 	const toggleListening = () => {
 		if (listening) {
@@ -31,6 +34,20 @@
 		recognition.onerror = handleError;
 		recognition.start();
 		listening = true;
+
+		// initialize Web Audio API
+		audioCtx = new AudioContext();
+		analyser = audioCtx.createAnalyser();
+		analyser.fftSize = 2048;
+		bufferLength = analyser.frequencyBinCount;
+		dataArray = new Uint8Array(bufferLength);
+
+		// connect user's microphone to analyser
+		navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+			const source = audioCtx.createMediaStreamSource(stream);
+			source.connect(analyser);
+			drawVisualizer();
+		});
 	};
 
 	const stopListening = () => {
@@ -81,11 +98,53 @@
 		}
 	};
 
+	const drawVisualizer = () => {
+		canvas = document.getElementById('visualizer');
+		canvasCtx = canvas.getContext('2d');
+
+		const WIDTH = canvas.width;
+		const HEIGHT = canvas.height;
+
+		canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+		const draw = () => {
+			requestAnimationFrame(draw);
+			analyser.getByteTimeDomainData(dataArray);
+
+			canvasCtx.fillStyle = 'rgb(255, 255, 255)';
+			canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+			canvasCtx.lineWidth = 2;
+			canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+
+			canvasCtx.beginPath();
+
+			const sliceWidth = WIDTH * 1.0 / bufferLength;
+			let x = 0;
+
+			for(let i = 0; i < bufferLength; i++) {
+				const v = dataArray[i] / 128.0;
+				const y = v * HEIGHT / 2;
+
+				if(i === 0) {
+					canvasCtx.moveTo(x, y);
+				} else {
+					canvasCtx.lineTo(x, y);
+				}
+
+				x += sliceWidth;
+			}
+
+			canvasCtx.lineTo(canvas.width, canvas.height/2);
+			canvasCtx.stroke();
+		};
+
+		draw();
+	};
+
 	onMount(() => {
 		window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 	});
 </script>
-
 <section>
 	<h1>Get the answers you need with just your voice - the effortless AI assistant.</h1>
 	<h2>Click "New Question" to ask your question or get a suggestion. Press "Stop Recording" when you are finished.</h2>
@@ -93,7 +152,7 @@
 		<p>{error}</p>
 	{/if}
 	<div class="flex response">
-		{#if response && !loading}
+		{#if response && !loading && !listening}
 			<p>{response}</p>
 		{/if}
 	</div>
@@ -105,101 +164,116 @@
 				<img src={logo} alt="generic express" />
 			</div>
 		{:else}
-		<button on:click={toggleListening}>
+			<div class="flex visualizer-wrapper">
 				{#if listening}
-					Stop Recording
-				{:else}
-					New Question
+					<canvas id="visualizer"></canvas>
 				{/if}
-		</button>
+				<button on:click={toggleListening}>
+					{#if listening}
+						Stop Recording
+					{:else}
+						New Question
+					{/if}
+				</button>
+			</div>
 		{/if}
 	</div>
 </section>
-
 <style>
-		main {
+    main {
         max-width: 48rem;
-		}
-	section {
-			display: flex;
-			align-content: center;
-			flex-direction: column;
-			justify-content: center;
-			height: 100%;
-	}
-	.flex {
-      display: flex;
-      align-content: center;
-      justify-content: center;
-	}
-	.response {
-			background: white;
-			border-radius: 1rem;
-			margin: 1rem;
-	}
-	.response > p {
-			color: black;
-			padding: 1rem 2rem;
-	}
-	h1 {
-			margin-top: 1.5rem;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-image: linear-gradient(45deg, #1E8BFF, white);
-	}
-	h2 {
-			display: flex;
-			justify-content: center;
-			text-align: center;
-			line-height: 2rem;
-	}
-	button {
-			cursor: pointer;
-			margin: 1rem;
-			width: 10rem;
-			height: 3rem;
-			border-radius: 1rem;
-			outline: none;
-			border: none;
-			font-size: 1rem;
-			font-weight: 700;
-	}
-  .welcome {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      height: 150px;
-  }
-  .welcome img {
-      width: 50px;
-      height: 50px;
-      margin: 0 20px;
-      opacity: 0.2;
-      animation: pulse 1s infinite;
-  }
-  .welcome img:nth-child(1) {
-      animation-delay: 0.2s;
-  }
-  .welcome img:nth-child(2) {
-      animation-delay: 0.4s;
-  }
-  .welcome img:nth-child(3) {
-      animation-delay: 0.6s;
-  }
-  @keyframes pulse {
-      0% {
-          transform: scale(1);
-          opacity: 0.2;
-      }
-      50% {
-          transform: scale(1.2);
-          opacity: 1;
-      }
-      100% {
-          transform: scale(1);
-          opacity: 0.2;
-      }
-  }
-</style>
+    }
+    section {
+        display: flex;
+        align-content: center;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+    .flex {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+    .response {
+        background: white;
+        border-radius: 1rem;
+        margin: 1rem;
+    }
+    .response > p {
+        color: black;
+        padding: 1rem 2rem;
+    }
+    h1 {
+        margin-top: 1.5rem;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-image: linear-gradient(45deg, #1E8BFF, white);
+    }
+    h2 {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        line-height: 2rem;
+    }
+    button {
+        cursor: pointer;
+        margin: 1rem;
+        width: 10rem;
+        height: 3rem;
+        border-radius: 1rem;
+        outline: none;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .visualizer-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    canvas {
+        width: 300px;
+        height: 100px;
+        border: 1px solid black;
+        margin-right: 1rem;
+    }
+    .welcome {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 150px;
+    }
+    .welcome img {
+        width: 50px;
+        height: 50px;
+        margin: 0 20px;
+        opacity: 0.2;
+        animation: pulse 1s infinite;
+    }
+    .welcome img:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+    .welcome img:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    .welcome img:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.2;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 0.2;
+        }
+    }
+    </style>
