@@ -52,7 +52,7 @@
 	}
 
 	function copyLink() {
-		const url = new URL(window?.location);
+		const url = new URL(import.meta.env.SNOWPACK_PUBLIC_URL);
 		navigator.clipboard.writeText(url.toString());
 		buttonText = 'Link Copied';
 		setTimeout(() => {
@@ -79,13 +79,3 @@
 	{/if}
 	<button on:click={copyLink}>{buttonText}</button>
 </div>
-
-<style>
-    h1 {
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-image: linear-gradient(45deg, #1E8BFF, white);
-    }
-</style>
-
