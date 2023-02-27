@@ -12,22 +12,22 @@
 		</svg>
 		<ul>
 			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href={$page.url.pathname === '/' ? 'javascript:void(0)' : '/'}>
+				<a href={$page.url.pathname === '/' ? '#' : '/'}>
 					Ask
 				</a>
 			</li>
 			<li aria-current={$page.url.pathname === '/translate' ? 'page' : undefined}>
-				<a href={$page.url.pathname === '/translate' ? 'javascript:void(0)' : '/translate'}>
+				<a href={$page.url.pathname === '/translate' ? '#' : '/translate'}>
 					Translate
 				</a>
 			</li>
 			<li aria-current={$page.url.pathname.startsWith('/meet') ? 'page' : undefined}>
-				<a href={$page.url.pathname.startsWith('/meet') ? 'javascript:void(0)' : '/meet'}>
+				<a href={$page.url.pathname.startsWith('/meet') ? '#' : '/meet'}>
 					Meet
 				</a>
 			</li>
 			<li aria-current={$page.url.pathname === '/shop' ? 'page' : undefined}>
-				<a href={$page.url.pathname === '/shop' ? 'javascript:void(0)' : '/shop'}>
+				<a href={$page.url.pathname === '/shop' ? '#' : '/shop'}>
 					Shop
 				</a>
 			</li>
