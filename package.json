@@ -36,6 +36,7 @@
 		"crypto-js": "^4.1.1",
 		"dotenv": "^16.0.3",
 		"svelte-autocomplete": "^0.0.4",
-		"tippy.js": "^6.3.7"
+		"tippy.js": "^6.3.7",
+		"uuid": "^9.0.0"
 	}
 }
