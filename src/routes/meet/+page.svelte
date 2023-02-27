@@ -20,6 +20,7 @@
 	const dispatch = createEventDispatcher();
 
 	function getLocation() {
+		updateUrl();
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -38,11 +39,9 @@
 	}
 
 	function updateUrl() {
-		console.log('toggle')
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
 			if (!url.searchParams.get('user')) {
-				console.log('here')
 				userId = uuidv4();
 				url.searchParams.set('user', userId);
 				window.history.pushState(null, '', url);
@@ -99,8 +98,9 @@
 		const existingSessionId = url.searchParams.get('id');
 		if (existingSessionId) {
 			instanceId = existingSessionId;
+			const url = new URL(window.location.href);
+			url.searchParams.set('id', instanceId);
 		}
-		updateUrl();
 		getLocation();
 	});
 
