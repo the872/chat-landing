@@ -52,7 +52,7 @@
 	}
 
 	function copyLink() {
-		const url = new URL(window.location);
+		const url = new URL(window?.location);
 		navigator.clipboard.writeText(url.toString());
 		buttonText = 'Link Copied';
 		setTimeout(() => {
