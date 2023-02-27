@@ -14,6 +14,9 @@
 
 	let otherInstances = [];
 
+	const instanceId = uuidv4();
+	const userId = uuidv4();
+
 	function getLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
@@ -34,6 +37,7 @@
 
 	function updateCenterPoint() {
 		const locations = otherInstances.concat({
+			id: instanceId,
 			latitude,
 			longitude
 		}).map(instance => ({
@@ -63,8 +67,8 @@
 </script>
 
 <div>
-	<h1>Find the perfect meeting spot. Effortlessly.</h1>
-	<h1>Coming Soon</h1>
+	<p>Instance ID: {instanceId}</p>
+	<p>User ID: {userId}</p>
 	<p>Latitude: {latitude}</p>
 	<p>Longitude: {longitude}</p>
 	<p>Accuracy: {accuracy}</p>
