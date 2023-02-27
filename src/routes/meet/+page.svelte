@@ -102,11 +102,12 @@
 		const existingSessionId = url.searchParams.get('id');
 		if (existingSessionId) {
 			instanceId = existingSessionId;
-			const url = new URL(window.location.href);
-			url.searchParams.set('id', instanceId);
+			url.searchParams.set('id', instanceId); // Update the URL with the existing instance ID
+			window.history.replaceState(null, '', url); // Update the browser's history with the modified URL
 		}
 		getLocation();
 	});
+
 
 	onDestroy(() => {
 		if (typeof window !== 'undefined') {
