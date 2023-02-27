@@ -20,7 +20,6 @@
 	const dispatch = createEventDispatcher();
 
 	function getLocation() {
-		updateUrl();
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -95,10 +94,11 @@
 
 	onMount(() => {
 		const url = new URL(window.location.href);
-		const existingUserId = url.searchParams.get('id');
-		if (existingUserId) {
-			instanceId = existingUserId;
+		const existingSessionId = url.searchParams.get('id');
+		if (existingSessionId) {
+			instanceId = existingSessionId;
 		}
+		updateUrl();
 		getLocation();
 	});
 
