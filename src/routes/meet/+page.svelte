@@ -78,20 +78,26 @@
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
 			url.searchParams.delete('user');
-			navigator.clipboard.writeText(url.toString());
-			buttonText = 'Link Copied';
-			setTimeout(() => {
-				buttonText = 'Copy Link';
-				dispatch('buttonTextUpdated', buttonText);
-			}, 3000);
+			navigator.clipboard.writeText(url.toString())
+				.then(() => {
+					buttonText = 'Link Copied';
+					dispatch('buttonTextUpdated', buttonText);
+					setTimeout(() => {
+						buttonText = 'Copy Link';
+						dispatch('buttonTextUpdated', buttonText);
+					}, 3000);
+				})
+				.catch(err => {
+					console.error('Failed to copy link: ', err);
+				});
 		}
 	}
 
 	onMount(() => {
 		const url = new URL(window.location.href);
-		const existingUserId = url.searchParams.get('user');
+		const existingUserId = url.searchParams.get('id');
 		if (existingUserId) {
-			userId = existingUserId;
+			instanceId = existingUserId;
 		}
 		getLocation();
 	});
