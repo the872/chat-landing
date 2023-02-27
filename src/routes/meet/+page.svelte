@@ -38,9 +38,11 @@
 	}
 
 	function updateUrl() {
+		console.log('toggle')
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
 			if (!url.searchParams.get('user')) {
+				console.log('here')
 				userId = uuidv4();
 				url.searchParams.set('user', userId);
 				window.history.pushState(null, '', url);
