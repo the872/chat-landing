@@ -6,7 +6,6 @@ const config = {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 	},
 	server: {
-		ws: true,
 		proxy: {
 			'/api': {
 				target: 'https://api.openai.com/v1/completions',
