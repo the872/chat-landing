@@ -84,6 +84,11 @@
 	}
 
 	onMount(() => {
+		const url = new URL(window.location.href);
+		const existingUserId = url.searchParams.get('user');
+		if (existingUserId) {
+			userId = existingUserId;
+		}
 		getLocation();
 	});
 
