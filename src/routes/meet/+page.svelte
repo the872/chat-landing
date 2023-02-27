@@ -2,6 +2,7 @@
 	<title>Meet | Generic Express</title>
 	<meta name="description" content="Find places to meet." />
 </svelte:head>
+
 <script>
 	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';
@@ -18,7 +19,7 @@
 
 	let otherInstances = [];
 
-	let instanceId = uuidv4();
+	let instanceId = '';
 	let userId = '';
 
 	const dispatch = createEventDispatcher();
@@ -45,22 +46,18 @@
 	function updateUrl() {
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
-			if (!url.searchParams.get('user')) {
-				userId = uuidv4();
-				url.searchParams.set('user', userId);
-				window.history.pushState(null, '', url);
-			} else {
-				userId = url.searchParams.get('user');
-			}
-			if (!url.searchParams.get('id')) {
+			userId = uuidv4(); // Generate a new user ID
+			url.searchParams.set('user', userId);
+			const instanceIdParam = url.searchParams.get('id');
+			if (!instanceIdParam) {
+				instanceId = uuidv4();
 				url.searchParams.set('id', instanceId);
 				window.history.pushState(null, '', url);
 			} else {
-				instanceId = url.searchParams.get('id');
+				instanceId = instanceIdParam;
 			}
 		}
 	}
-
 
 	function updateCenterPoint() {
 		const locations = otherInstances.concat({
@@ -81,7 +78,6 @@
 	function copyLink() {
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
-			url.searchParams.delete('user');
 			navigator.clipboard.writeText(url.toString())
 				.then(() => {
 					buttonText = 'Link Copied';
@@ -97,17 +93,21 @@
 		}
 	}
 
+
 	onMount(() => {
 		const url = new URL(window.location.href);
 		const existingSessionId = url.searchParams.get('id');
 		if (existingSessionId) {
 			instanceId = existingSessionId;
-			url.searchParams.set('id', instanceId); // Update the URL with the existing instance ID
-			window.history.replaceState(null, '', url); // Update the browser's history with the modified URL
+			url.searchParams.set('id', instanceId);
+			window.history.replaceState(null, '', url);
+		} else {
+			instanceId = uuidv4();
+			url.searchParams.set('id', instanceId);
+			window.history.pushState(null, '', url);
 		}
 		getLocation();
 	});
-
 
 	onDestroy(() => {
 		if (typeof window !== 'undefined') {
@@ -119,7 +119,6 @@
 	});
 
 </script>
-
 <div>
 	<p>Instance ID: {instanceId}</p>
 	<p>User ID: {userId}</p>
