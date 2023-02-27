@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Meet | Generic Express</title>
+	<meta name="description" content="Find places to meet." />
+</svelte:head>
 <script>
 	import { onMount, onDestroy, createEventDispatcher } from 'svelte';
 	import { v4 as uuidv4 } from 'uuid';

@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Ask | Generic Express</title>
+	<meta name="description" content="the effortless AI assistant." />
+</svelte:head>
 <script>
 	import { onMount } from 'svelte';
 	import axios from 'axios';
@@ -25,6 +29,7 @@
 	};
 
 	let recognition = null;
+	let localStream = null;
 
 	const startListening = () => {
 		recognition = new window.SpeechRecognition();
@@ -44,6 +49,7 @@
 
 		// connect user's microphone to analyser
 		navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+			localStream = stream;
 			const source = audioCtx.createMediaStreamSource(stream);
 			source.connect(analyser);
 			drawVisualizer();
@@ -51,7 +57,10 @@
 	};
 
 	const stopListening = () => {
+		const tracks = localStream.getTracks();
+		tracks.forEach(track => track.stop());
 		recognition.stop();
+		recognition = null;
 		listening = false;
 		loading = true;
 		setTimeout(() => {
