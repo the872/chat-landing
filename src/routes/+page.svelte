@@ -83,7 +83,7 @@
 	const sendTranscript = async () => {
 		const { VITE_OPENAI_API_KEY: apiKey } = import.meta.env;
 		try {
-			const { data } = await axios.post('/api', {
+			const { data } = await axios.post('https://api.openai.com/v1/completions', {
 				model: 'text-davinci-003',
 				prompt: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\nHuman: ${transcript}\nAI:`,
 				temperature: 0.9,
