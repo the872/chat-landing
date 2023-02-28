@@ -8,9 +8,9 @@ const config = {
 	server: {
 		proxy: {
 			'/api': {
-				target: 'https://api.openai.com/v1/completions',
+				target: 'https://api.openai.com',
 				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, ''),
+				rewrite: (path) => path.replace(/^\/api/, '/v1/completions'),
 			},
 		},
 	},
