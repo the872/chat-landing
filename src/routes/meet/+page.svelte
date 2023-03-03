@@ -192,7 +192,7 @@
 </script>
 <div class="text-column">
 	<h1>Meet halfway without the hassle - share a link, view the map, and meet your friends.</h1>
-	<h2>Copy and send the link to your friends, once you and you friends are on the page at the same time, the map will show you the halfway point between you guys.</h2>
+	<h2>Copy and send the link to your friends, once you and you friends are on the page at the same time, the map will show you the halfway point.</h2>
 	<div id="map"></div>
 	<div class="flex">
 		<button on:click={copyLink}>{buttonText}</button>
